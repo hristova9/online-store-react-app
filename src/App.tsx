@@ -1,10 +1,13 @@
 import "./App.css";
 import ListProductPage from "./pages/ListProductsPage/ListProductsPage";
+import { ProductProvider } from "./services/ProductContext";
 
 function App() {
   return (
     <main id="main">
-      <ListProductPage />
+      <ProductProvider>
+        <ListProductPage />
+s      </ProductProvider>
     </main>
   );
 }

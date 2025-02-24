@@ -1,0 +1,9 @@
+.product-image {
+  margin-top: 10px;
+  width: 90%;
+  height: 200px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  position: relative;
+}

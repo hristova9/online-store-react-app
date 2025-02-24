@@ -1,5 +1,5 @@
 import { Product } from "../../models/Product";
-import ListProduct from "../ListProduct/ListProduct";
+import ListProductsItem from "../ListProductsItem/ListProductsItem";
 import { useGetProductsQuery } from "../../store/productApi";
 import "./ListProducts.css";
 
@@ -12,7 +12,7 @@ const ListProducts = () => {
   return (
     <div className="list-products-container">
       <ul className="products-list">
-        {products?.map((product: Product) => <ListProduct key={product.id} product={product}/>)}
+        {products?.map((product: Product) => <ListProductsItem key={product.id} product={product}/>)}
       </ul>
     </div>
   );

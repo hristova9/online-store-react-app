@@ -3,7 +3,5 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  /* align-items: ; */
-  /* align-content: baseline; */
   gap: 30px;
 }
