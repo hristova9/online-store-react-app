@@ -1,16 +1,15 @@
 import React from "react";
 import Button from "../Button/Button";
-import { useProductContext } from "../../services/ProductContext";
 import "./ProductInfo.css";
 
 interface ProductInfoProps {
   id: number;
   title: string;
   price: number;
+  onBuyClick: () => void;
 }
 
-const ProductInfo: React.FC<ProductInfoProps> = ({ id ,title, price }) => {
-  const { handleBuyClick, handleDetailsClick } = useProductContext();
+const ProductInfo: React.FC<ProductInfoProps> = ({ title, price, onBuyClick }) => {
   return (
     <div className="product-info">
       <h3 className="product-title">{title}</h3>
@@ -18,14 +17,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ id ,title, price }) => {
       <div className="product-buttons">
         <Button
           label="Buy"
-          onClick={() => handleBuyClick(id)}
+          onClick={onBuyClick}
           className="btn-buy"
         />
-        <Button
+        {/* <Button
           label="Details"
           onClick={() => handleDetailsClick(id)}
           className="btn-details"
-        />
+        /> */}
       </div>
     </div>
   );

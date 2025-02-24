@@ -1,14 +1,15 @@
+import { Provider } from "react-redux";
 import "./App.css";
 import ListProductPage from "./pages/ListProductsPage/ListProductsPage";
-import { ProductProvider } from "./services/ProductContext";
+import store from "./store/store";
 
 function App() {
   return (
-    <main id="main">
-      <ProductProvider>
+    <Provider store={store}>
+      <main id="main">
         <ListProductPage />
-s      </ProductProvider>
-    </main>
+      </main>
+    </Provider>
   );
 }
 

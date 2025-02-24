@@ -4,28 +4,30 @@ import "./ListProductsItem.css";
 import HeartButton from "../HeartButton/HeartButton";
 import ProductImage from "../ProductImage/ProductImage";
 import ProductInfo from "../ProductInfo/ProductInfo";
-import { useProductContext } from "../../services/ProductContext";
 
-const ListProductsItem: React.FC<{ product: Product }> = ({ product }) => {
-  const { handleAddToFavorites } = useProductContext();
-  // const handleAddToFavorites = () => {
-  //   console.log("Added to favorites:", product.title);
-  // };
+interface ListProductsItemProps {
+  product: Product;
+  onBuyClick: (product: Product) => void;
+  onFavouritesClick: (product: Product) => void;
+}
 
-  // const handleBuyClick = () => {
-  //   console.log("Product bought:", product.title);
-  // };
+const ListProductsItem: React.FC<ListProductsItemProps> = ({
+  product,
+  onBuyClick,
+  onFavouritesClick
+}) => {
 
-  // const handleDetailsClick = () => {
-  //   console.log("Product details:", product.title);
-  // };
- 
   return (
     <li className="product-item">
       <div className="product-card">
-        <HeartButton onClick={() => handleAddToFavorites(product.id)} />
+        <HeartButton onClick={() => onFavouritesClick(product)} />
         <ProductImage image={product.image} alt={product.title} />
-        <ProductInfo id={product.id} title={product.title} price={product.price} />
+        <ProductInfo
+          id={product.id}
+          title={product.title}
+          price={product.price}
+          onBuyClick={() => onBuyClick(product)}
+        />
       </div>
     </li>
   );
