@@ -1,6 +1,7 @@
 import { Product } from "../../models/Product";
 import ListProduct from "../ListProduct/ListProduct";
 import { useGetProductsQuery } from "../../store/productApi";
+import "./ListProducts.css";
 
 const ListProducts = () => {
   const { data: products, error, isLoading } = useGetProductsQuery();
