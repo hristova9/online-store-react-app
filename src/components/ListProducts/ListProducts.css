@@ -1,15 +1,18 @@
 .list-products-container {
-    position: relative;
-    z-index: 1; /* Ensure it's below the modal */
-    overflow: visible;
-  }
-  
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
 
 .products-list {
-    padding: 30px;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    gap: 30px;
-  }
-  
+  padding: 30px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.products-title {
+  text-align: center;
+  color: #2980b9;
+}

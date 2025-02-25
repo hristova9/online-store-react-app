@@ -1,6 +1,5 @@
 import { Product } from "../../models/Product";
 import ListProductsItem from "../ListProductsItem/ListProductsItem";
-import { useGetProductsQuery } from "../../store/productApi";
 import "./ListProducts.css";
 import {
   useAddToBasketMutation,
@@ -10,68 +9,66 @@ import { useAddToFavouritesMutation } from "../../store/favouritesApi";
 import { handleError } from "../../utils/errorUtils";
 import { useEffect, useState } from "react";
 import ModalMessage from "../ModalMessage/ModalMessage";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, setBasket } from "../../store/basketSlice";
+import { useGetProductsQuery } from "../../store/productApi";
+import { AppDispatch, RootState } from "../../store/store";
 
 const ListProducts = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const basketItems = useSelector((state: RootState) => state.basket.items);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const {
-    data: products,
-    error,
-    isLoading,
-    isSuccess: productsSuccess,
-  } = useGetProductsQuery();
-  const { data: basketProducts, isSuccess: basketSuccess } =
-    useGetBasketQuery();
-  const [transformedProducts, setTransformedProducts] = useState<Product[]>([]);
-  const [basket, setBasket] = useState<Product[]>([]);
+
+  const { data: products, error, isLoading } = useGetProductsQuery();
+  const { data: basketProducts, refetch } = useGetBasketQuery();
 
   const [addToBasket] = useAddToBasketMutation();
   const [addToFavourites] = useAddToFavouritesMutation();
 
+  // Keep Redux store in sync with API
   useEffect(() => {
-    if (basketSuccess && basketProducts) {
-      setBasket(basketProducts);
+    if (basketProducts) {
+      dispatch(setBasket(basketProducts));
     }
-  }, [basketSuccess, basketProducts]);
-
-  useEffect(() => {
-    if (productsSuccess && products) {
-      const newProducts = products.map((product: Product) => ({
-        ...product,
-        id: String(product.id),
-        quantity: 0,
-      }));
-      setTransformedProducts(newProducts);
-    }
-  }, [products, productsSuccess]);
+  }, [basketProducts, dispatch]);
 
   const handleBuyClick = async (product: Product) => {
-    let isInBasket = false;
-    if (basket) {
-      isInBasket = basket.some((p: Product) => p.id === product.id);
-    }
-    if (isInBasket) {
+    const normalizedProduct = { ...product, id: String(product.id) };
+    const existingItem = basketItems.find((p: Product) => p.id === normalizedProduct.id);
+
+    if (existingItem) {
       setModalMessage("This product is already in your cart!");
       setShowModal(true);
-    } else {
-      product.quantity++;
-      try {
-        await addToBasket(product).unwrap();
-        setBasket((prevBasket) => [...(prevBasket || []), product]);
-        alert("Product added to basket!");
-      } catch (err) {
-        const errorMessage = handleError(err);
-        alert(`Failed to add to basket: ${errorMessage}`);
-      }
+      return;
+    }
+
+    dispatch(addItem({ ...normalizedProduct, quantity: 1 }));
+
+    try {
+      await addToBasket({ ...normalizedProduct, quantity: 1 }).unwrap();
+      setModalMessage("Product added to basket!");
+      setShowModal(true);
+      await refetch(); // Ensure API stays updated
+    } catch (err) {
+      handleError(err);
+      alert("Failed to update basket.");
     }
   };
+
+  const handleDetailsClick = (productId: string) => {
+    navigate(`/products/${productId}`);
+  };
+
   const handleFavouritesClick = async (product: Product) => {
     try {
       await addToFavourites(product).unwrap();
       alert("Product added to favourites!");
-    } catch (err: unknown) {
-      const errorMessage = handleError(err);
-      alert(`Failed to add to favourites: ${errorMessage}`);
+    } catch (err) {
+      alert(`Failed to add to favourites: ${handleError(err)}`);
     }
   };
 
@@ -81,12 +78,14 @@ const ListProducts = () => {
   return (
     <>
       <div className="list-products-container">
+        <h1 className="products-title">Products List</h1>
         <ul className="products-list">
-          {transformedProducts?.map((product: Product) => (
+          {products?.map((product: Product) => (
             <ListProductsItem
               key={product.id}
               product={product}
               onBuyClick={() => handleBuyClick(product)}
+              onDetailsClick={() => handleDetailsClick(product.id)}
               onFavouritesClick={() => handleFavouritesClick(product)}
             />
           ))}

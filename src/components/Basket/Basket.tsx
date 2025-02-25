@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+  useClearBasketMutation,
   useGetBasketQuery,
   useRemoveFromBasketMutation,
   useUpdateProductQuantityMutation,
@@ -10,12 +11,27 @@ import BasketListItem from "../BasketListItem/BasketListItem";
 import { useAddToFavouritesMutation } from "../../store/favouritesApi";
 import { handleError } from "../../utils/errorUtils";
 import { Product } from "../../models/Product";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import {
+  removeItem,
+  setBasket,
+  updateItemQuantity,
+  clearBasket,
+} from "../../store/basketSlice";
+import { useNavigate } from "react-router-dom";
 
 const Basket: React.FC = () => {
-  const { data: basketProducts, error, isLoading } = useGetBasketQuery();
-  const [localBasket, setLocalBasket] = React.useState<Product[]>(
-    basketProducts || []
-  );
+  const {
+    data: basketProducts,
+    error,
+    isLoading,
+    refetch,
+  } = useGetBasketQuery();
+  const [clearBasketApi] = useClearBasketMutation();
+  const basketItems = useSelector((state: RootState) => state.basket.items);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [removeFromBasket] = useRemoveFromBasketMutation();
   const [addToFavourites] = useAddToFavouritesMutation();
@@ -23,56 +39,52 @@ const Basket: React.FC = () => {
 
   useEffect(() => {
     if (basketProducts) {
-      setLocalBasket(basketProducts);
+      dispatch(setBasket(basketProducts));
     }
-  }, [basketProducts]);
+  }, [basketProducts, dispatch]);
 
   const handleRemoveFromBasket = async (productId: string) => {
     try {
       await removeFromBasket(productId).unwrap();
-      setLocalBasket((prevProducts) =>
-        prevProducts.filter((p) => p.id !== productId)
-      );
+      dispatch(removeItem(productId));
     } catch (err) {
-        handleError(err);
-      alert("Failed to remove product!");
+      alert(`Failed to remove product: ${handleError(err)}`);
     }
-  };
-
-  const handleCheckout = () => { //remove all from the basket ----
-    alert("Proceeding to checkout!");
   };
 
   const handleFavouritesClick = async (product: Product) => {
     try {
       await addToFavourites(product).unwrap();
       alert("Product added to favourites!");
-    } catch (err: unknown) {
-      const errorMessage = handleError(err);
-      alert(`Failed to add to favourites: ${errorMessage}`);
+    } catch (err) {
+      alert(`Failed to add to favourites: ${handleError(err)}`);
     }
   };
 
   const handleDecreaseQuantity = async (product: Product) => {
     if (product.quantity > 1) {
       const updatedProduct = { ...product, quantity: product.quantity - 1 };
-      updateQuantity(updatedProduct);
-      updateLocalQuantity(updatedProduct);
-    } else {
-      alert("You need to remove the product from the basket!");
+      dispatch(updateItemQuantity(updatedProduct));
+      await updateQuantity(updatedProduct).unwrap();
     }
   };
 
   const handleIncreaseQuantity = async (product: Product) => {
     const updatedProduct = { ...product, quantity: product.quantity + 1 };
-    updateQuantity(updatedProduct);
-    updateLocalQuantity(updatedProduct);
+    dispatch(updateItemQuantity(updatedProduct));
+    await updateQuantity(updatedProduct).unwrap();
   };
 
-  const updateLocalQuantity = (updatedProduct: Product) => {
-    setLocalBasket((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
+  const handleCheckout = async () => {
+    try {
+      await clearBasketApi(basketItems).unwrap();
+      dispatch(clearBasket());
+      await refetch();
+      navigate("/");
+    } catch (err) {
+      handleError(err);
+      alert("Failed to checkout. Please try again.");
+    }
   };
 
   if (isLoading) return <p>Loading basket...</p>;
@@ -80,30 +92,29 @@ const Basket: React.FC = () => {
 
   return (
     <div className="basket-component">
-      <h1>Your Basket</h1>
-      {!basketProducts || basketProducts.length === 0 ? (
+      <h1 className="basket-title">Your Basket</h1>
+      {basketItems.length === 0 ? (
         <p>Your basket is empty!</p>
       ) : (
         <div className="basket-list-container">
           <ul className="basket-list">
-            {localBasket.map((product) => (
+            {basketItems.map((product: Product) => (
               <BasketListItem
                 key={product.id}
                 product={product}
                 onFavouritesClick={() => handleFavouritesClick(product)}
+                onDetailsClick={() => navigate(`/products/${product.id}`)}
                 onRemoveClick={() => handleRemoveFromBasket(product.id)}
                 onDecreaseQuantity={() => handleDecreaseQuantity(product)}
                 onIncreaseQuantity={() => handleIncreaseQuantity(product)}
               />
             ))}
           </ul>
-          <div className="checkout-btn">
-            <Button
-              onClick={handleCheckout}
-              label="Checkout"
-              className="btn-buy"
-            />
-          </div>
+          <Button
+            onClick={handleCheckout}
+            label="Checkout"
+            className="btn-buy checkout-btn"
+          />
         </div>
       )}
     </div>

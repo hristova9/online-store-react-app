@@ -1,3 +1,10 @@
+.basket-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .basket-list {
   padding: 0;
   width: 100%;
@@ -7,8 +14,15 @@
   align-items: center;
 }
 
+.basket-title {
+  text-align: center;
+  color: #2980b9;
+}
+
 .checkout-btn {
-  width: 90%;
-  display: flex;
-  justify-content: flex-end;
+  width: 30%;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
 }

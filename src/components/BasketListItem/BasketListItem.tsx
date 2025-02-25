@@ -1,6 +1,5 @@
 import React from "react";
 import { Product } from "../../models/Product";
-import HeartButton from "../HeartButton/HeartButton";
 import ProductImage from "../ProductImage/ProductImage";
 import "./BasketListItem.css";
 import Button from "../Button/Button";
@@ -8,6 +7,7 @@ import Button from "../Button/Button";
 interface BasketListItemProps {
   product: Product;
   onFavouritesClick: () => void;
+  onDetailsClick: () => void;
   onRemoveClick: () => void;
   onDecreaseQuantity: () => void;
   onIncreaseQuantity: () => void;
@@ -15,7 +15,7 @@ interface BasketListItemProps {
 
 const BasketListItem: React.FC<BasketListItemProps> = ({
   product,
-  onFavouritesClick,
+  onDetailsClick,
   onRemoveClick,
   onDecreaseQuantity,
   onIncreaseQuantity
@@ -23,7 +23,6 @@ const BasketListItem: React.FC<BasketListItemProps> = ({
   return (
     <li className="basket-item">
       <div className="product-card-basket">
-        <HeartButton onClick={onFavouritesClick} />
         <ProductImage
           image={product.image}
           alt={product.title}
@@ -40,11 +39,11 @@ const BasketListItem: React.FC<BasketListItemProps> = ({
             <span className="quantity-display">{product.quantity}</span>
             <button className="quantity-btn" onClick={onIncreaseQuantity}>+</button>
           </div>
-            {/* <Button
-          label="Details"
-        //   onClick={() => handleDetailsClick(id)}
-          className="btn-details"
-        /> */}
+          <Button
+              label="Details"
+              onClick={() => onDetailsClick()}
+              className="btn-details"
+            />
         
             <Button onClick={onRemoveClick} label="Remove" className="btn-remove" />
           </div>
