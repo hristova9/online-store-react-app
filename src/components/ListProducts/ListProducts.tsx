@@ -74,7 +74,7 @@ const ListProducts = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <div className="loader">Loading products...</div>;
   if (error) return <p>Error: {JSON.stringify(error)}</p>;
   if (!products)
     return <h3 className="empty-message">No available products!</h3>;
