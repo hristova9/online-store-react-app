@@ -1,5 +1,6 @@
 .btn-buy,
-.btn-details {
+.btn-details,
+.btn-remove {
   padding: 10px 15px;
   font-size: 14px;
   border: none;
@@ -24,4 +25,13 @@
 
 .btn-details:hover {
   background-color: #2980b9;
+}
+
+.btn-remove {
+  background-color: #cc0000;
+  color: #fff;
+}
+
+.btn-remove:hover {
+  background-color: #990000;
 }

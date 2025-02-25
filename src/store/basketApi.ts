@@ -23,6 +23,13 @@ export const basketApi = createApi({
         method: "DELETE",
       }),
     }),
+    updateProductQuantity: builder.mutation<Product, Product>({
+        query: ( product ) => ({
+          url: `/basket/${product.id}`,
+          method: 'PUT',
+          body: product ,
+        }),
+      }),
   }),
 });
 
@@ -30,4 +37,5 @@ export const {
   useGetBasketQuery,
   useAddToBasketMutation,
   useRemoveFromBasketMutation,
+  useUpdateProductQuantityMutation
 } = basketApi;

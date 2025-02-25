@@ -1,7 +1,15 @@
+.list-products-container {
+    position: relative;
+    z-index: 1; /* Ensure it's below the modal */
+    overflow: visible;
+  }
+  
+
 .products-list {
     padding: 30px;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  gap: 30px;
-}
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+  

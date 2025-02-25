@@ -1,0 +1,122 @@
+.basket-item {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.product-card-basket {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 250px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.product-card-basket:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-image-basket {
+  margin: 10px;
+  width: 250px;
+  height: 200px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  position: relative;
+}
+
+.basket-info-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-info-basket {
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.product-title-basket {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  width: 70%;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.product-price-basket {
+  font-size: 16px;
+  width: 30%;
+  color: #e67e22;
+  margin-bottom: 15px;
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 5px;
+  background-color: #fff;
+}
+
+.quantity-btn,
+.quantity-display {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.quantity-btn {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.quantity-btn:hover {
+  background-color: #2ecc71;
+}
+
+.quantity-display {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.product-buttons-basket {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 20px;
+}

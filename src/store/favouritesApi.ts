@@ -10,7 +10,7 @@ export const favouritesApi = createApi({
     getFavourites: builder.query<Product[], void>({
       query: () => "/favourites",
     }),
-    getFavouriteItem: builder.query<Product, number>({
+    getFavouriteItem: builder.query<Product, string>({
       query: (id) => `/favourites/${id}`,
     }),
     addToFavourites: builder.mutation<Product, Product>({
@@ -20,7 +20,7 @@ export const favouritesApi = createApi({
         body: product,
       }),
     }),
-    removeFromFavourites: builder.mutation<void, number>({
+    removeFromFavourites: builder.mutation<void, string>({
       query: (id) => ({
         url: `/favourites/${id}`,
         method: "DELETE",

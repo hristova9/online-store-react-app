@@ -3,7 +3,7 @@ import { Product } from "../../models/Product";
 import "./ListProductsItem.css";
 import HeartButton from "../HeartButton/HeartButton";
 import ProductImage from "../ProductImage/ProductImage";
-import ProductInfo from "../ProductInfo/ProductInfo";
+import Button from "../Button/Button";
 
 interface ListProductsItemProps {
   product: Product;
@@ -14,20 +14,29 @@ interface ListProductsItemProps {
 const ListProductsItem: React.FC<ListProductsItemProps> = ({
   product,
   onBuyClick,
-  onFavouritesClick
+  onFavouritesClick,
 }) => {
-
   return (
     <li className="product-item">
       <div className="product-card">
         <HeartButton onClick={() => onFavouritesClick(product)} />
-        <ProductImage image={product.image} alt={product.title} />
-        <ProductInfo
-          id={product.id}
-          title={product.title}
-          price={product.price}
-          onBuyClick={() => onBuyClick(product)}
-        />
+        <ProductImage image={product.image} alt={product.title} className="product-image" />
+        <div className="product-info">
+          <h3 className="product-title">{product.title}</h3>
+          <p className="product-price">${product.price.toFixed(2)}</p>
+          <div className="product-buttons">
+            <Button
+              label="Buy"
+              onClick={() => onBuyClick(product)}
+              className="btn-buy"
+            />
+            {/* <Button
+          label="Details"
+          onClick={() => handleDetailsClick(id)}
+          className="btn-details"
+        /> */}
+          </div>
+        </div>
       </div>
     </li>
   );
