@@ -38,7 +38,9 @@ const ListProducts = () => {
 
   const handleBuyClick = async (product: Product) => {
     const normalizedProduct = { ...product, id: String(product.id) };
-    const existingItem = basketItems.find((p: Product) => p.id === normalizedProduct.id);
+    const existingItem = basketItems.find(
+      (p: Product) => p.id === normalizedProduct.id
+    );
 
     if (existingItem) {
       setModalMessage("This product is already in your cart!");
@@ -74,13 +76,15 @@ const ListProducts = () => {
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {JSON.stringify(error)}</p>;
+  if (!products)
+    return <h3 className="empty-message">No available products!</h3>;
 
   return (
     <>
       <div className="list-products-container">
         <h1 className="products-title">Products List</h1>
         <ul className="products-list">
-          {products?.map((product: Product) => (
+          {products.map((product: Product) => (
             <ListProductsItem
               key={product.id}
               product={product}

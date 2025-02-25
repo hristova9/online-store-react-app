@@ -21,17 +21,23 @@ const ProductDetails: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const { data: product, error, isLoading } = useGetProductByIdQuery(id ?? skipToken);
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useGetProductByIdQuery(id ?? skipToken);
   const basketItems = useSelector((state: RootState) => state.basket.items);
   const [addToBasket] = useAddToBasketMutation();
 
   if (isLoading) return <p>Loading product details...</p>;
   if (error) return <p>Error loading product details.</p>;
-  if (!product) return <p>Product not found.</p>;
+  if (!product) return <h3 className="empty-message">Product not found.</h3>;
 
   const handleBuyClick = async (product: Product) => {
     const normalizedProduct = { ...product, id: String(product.id) };
-    const alreadyInBasket = basketItems.some((p) => p.id === normalizedProduct.id);
+    const alreadyInBasket = basketItems.some(
+      (p) => p.id === normalizedProduct.id
+    );
 
     if (alreadyInBasket) {
       setModalMessage("This product is already in your cart!");
@@ -55,17 +61,33 @@ const ProductDetails: React.FC = () => {
     <>
       <div className="product-details">
         <h1 className="product-title">{product.title}</h1>
-        <ProductImage image={product.image} alt={product.title} className="product-image" />
+        <ProductImage
+          image={product.image}
+          alt={product.title}
+          className="product-image"
+        />
         <p className="product-description">{product.description}</p>
         <p className="product-price">
           Price: <span>${product.price.toFixed(2)}</span>
         </p>
         <div className="button-container">
-          <Button label="Buy" onClick={() => handleBuyClick(product)} className="btn-buy" />
-          <Button label="Back to Products" onClick={() => navigate("/")} className="btn-details" />
+          <Button
+            label="Buy"
+            onClick={() => handleBuyClick(product)}
+            className="btn-buy"
+          />
+          <Button
+            label="Back to Products"
+            onClick={() => navigate("/")}
+            className="btn-details"
+          />
         </div>
       </div>
-      <ModalMessage isOpen={showModal} onClose={() => setShowModal(false)} title="Message">
+      <ModalMessage
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Message"
+      >
         <p>{modalMessage}</p>
       </ModalMessage>
     </>
@@ -73,4 +95,3 @@ const ProductDetails: React.FC = () => {
 };
 
 export default ProductDetails;
-

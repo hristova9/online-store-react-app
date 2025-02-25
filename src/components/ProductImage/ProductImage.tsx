@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "./ProductImage.css";
 
 interface ProductImageProps {
@@ -7,7 +7,11 @@ interface ProductImageProps {
   className?: string;
 }
 
-const ProductImage: React.FC<ProductImageProps> = ({ image, alt, className }) => {
+const ProductImage: React.FC<ProductImageProps> = ({
+  image,
+  alt,
+  className,
+}) => {
   return <img src={image} alt={alt} className={className} />;
 };
 

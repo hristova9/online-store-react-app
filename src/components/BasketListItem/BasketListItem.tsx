@@ -18,7 +18,7 @@ const BasketListItem: React.FC<BasketListItemProps> = ({
   onDetailsClick,
   onRemoveClick,
   onDecreaseQuantity,
-  onIncreaseQuantity
+  onIncreaseQuantity,
 }) => {
   return (
     <li className="basket-item">
@@ -34,18 +34,26 @@ const BasketListItem: React.FC<BasketListItemProps> = ({
             <p className="product-price-basket">${product.price.toFixed(2)}</p>
           </div>
           <div className="product-buttons-basket">
-          <div className="quantity-container">
-            <button className="quantity-btn" onClick={onDecreaseQuantity}>-</button>
-            <span className="quantity-display">{product.quantity}</span>
-            <button className="quantity-btn" onClick={onIncreaseQuantity}>+</button>
-          </div>
-          <Button
+            <div className="quantity-container">
+              <button className="quantity-btn" onClick={onDecreaseQuantity}>
+                -
+              </button>
+              <span className="quantity-display">{product.quantity}</span>
+              <button className="quantity-btn" onClick={onIncreaseQuantity}>
+                +
+              </button>
+            </div>
+            <Button
               label="Details"
               onClick={() => onDetailsClick()}
               className="btn-details"
             />
-        
-            <Button onClick={onRemoveClick} label="Remove" className="btn-remove" />
+
+            <Button
+              onClick={onRemoveClick}
+              label="Remove"
+              className="btn-remove"
+            />
           </div>
         </div>
       </div>

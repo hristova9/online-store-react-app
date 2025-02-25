@@ -7,7 +7,7 @@ import Button from "../Button/Button";
 interface ListProductsItemProps {
   product: Product;
   onBuyClick: (product: Product) => void;
-  onDetailsClick:(id: string) => void;
+  onDetailsClick: (id: string) => void;
   onFavouritesClick: (product: Product) => void;
 }
 

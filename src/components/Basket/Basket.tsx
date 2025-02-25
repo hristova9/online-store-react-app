@@ -94,7 +94,7 @@ const Basket: React.FC = () => {
     <div className="basket-component">
       <h1 className="basket-title">Your Basket</h1>
       {basketItems.length === 0 ? (
-        <p>Your basket is empty!</p>
+        <h3 className="epmty-message">Your basket is empty!</h3>
       ) : (
         <div className="basket-list-container">
           <ul className="basket-list">

@@ -1,7 +1,4 @@
 :root {
-  /* display: flex;
-  flex-direction: column;
-  min-height: 100vh; */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -11,7 +8,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #root{
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -19,8 +17,7 @@ html, body, #root{
   flex-direction: column;
 }
 
-/* #root {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-} */
+#root {
+  flex: 1;
+  overflow: auto;
+}
