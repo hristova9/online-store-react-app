@@ -6,7 +6,6 @@ import Button from "../Button/Button";
 
 interface BasketListItemProps {
   product: Product;
-  onFavouritesClick: () => void;
   onDetailsClick: () => void;
   onRemoveClick: () => void;
   onDecreaseQuantity: () => void;

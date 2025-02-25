@@ -8,7 +8,6 @@ import {
 import "./Basket.css";
 import Button from "../Button/Button";
 import BasketListItem from "../BasketListItem/BasketListItem";
-import { useAddToFavouritesMutation } from "../../store/favouritesApi";
 import { handleError } from "../../utils/errorUtils";
 import { Product } from "../../models/Product";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +33,6 @@ const Basket: React.FC = () => {
   const navigate = useNavigate();
 
   const [removeFromBasket] = useRemoveFromBasketMutation();
-  const [addToFavourites] = useAddToFavouritesMutation();
   const [updateQuantity] = useUpdateProductQuantityMutation();
 
   useEffect(() => {
@@ -52,20 +50,12 @@ const Basket: React.FC = () => {
     }
   };
 
-  const handleFavouritesClick = async (product: Product) => {
-    try {
-      await addToFavourites(product).unwrap();
-      alert("Product added to favourites!");
-    } catch (err) {
-      alert(`Failed to add to favourites: ${handleError(err)}`);
-    }
-  };
-
   const handleDecreaseQuantity = async (product: Product) => {
     if (product.quantity > 1) {
       const updatedProduct = { ...product, quantity: product.quantity - 1 };
       dispatch(updateItemQuantity(updatedProduct));
       await updateQuantity(updatedProduct).unwrap();
+      refetch();
     }
   };
 
@@ -73,6 +63,7 @@ const Basket: React.FC = () => {
     const updatedProduct = { ...product, quantity: product.quantity + 1 };
     dispatch(updateItemQuantity(updatedProduct));
     await updateQuantity(updatedProduct).unwrap();
+    refetch();
   };
 
   const handleCheckout = async () => {
@@ -102,7 +93,6 @@ const Basket: React.FC = () => {
               <BasketListItem
                 key={product.id}
                 product={product}
-                onFavouritesClick={() => handleFavouritesClick(product)}
                 onDetailsClick={() => navigate(`/products/${product.id}`)}
                 onRemoveClick={() => handleRemoveFromBasket(product.id)}
                 onDecreaseQuantity={() => handleDecreaseQuantity(product)}
